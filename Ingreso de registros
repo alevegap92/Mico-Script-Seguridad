@@ -1,0 +1,14 @@
+#/bin/bash
+C=1
+cd /mnt/sdcard/mico
+pwd
+ls
+while [ $C -lt 10 ] 
+do
+	Archivo=$(echo 8074752$C)
+	cp -r /mnt/sdcard/mico/80747520 /mnt/sdcard/mico/universal/$Archivo
+	let C=$C+1
+done 
+cd /mnt/sdcard/mico/universal
+pwd
+ls
