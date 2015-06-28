@@ -1,0 +1,11 @@
+import sys
+import subprocess
+from scapy.all import * 
+import time
+
+Mensaje = "Inyeccion"
+Paquete = IP(src=192.168.1.50,dst=54.92.103.108)/TCP(sport=paquete1,dport=80)/Mensaje
+
+while(True):
+	send(Paquete)
+	time.sleep(1
