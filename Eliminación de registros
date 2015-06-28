@@ -1,0 +1,10 @@
+#/bin/bash
+echo "Carpetas Mico /sdcard/mico/"
+cd /mnt/sdcard/mico/
+pwd
+echo "Se encuentra las carpetas:"
+ls
+rm -r /mnt/sdcard/mico/universal 
+echo "Carpeta Universal eliminada"
+echo "Carpetas en Mico"
+ls 
