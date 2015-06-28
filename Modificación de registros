@@ -1,0 +1,8 @@
+#/bin/bash
+cd /mnt/sdcard/mico/universal
+pwd
+ls > CarpetaUniversal.txt
+while read linea 
+do
+	cp homero $linea
+done < CarpetaUniversal.txt 
